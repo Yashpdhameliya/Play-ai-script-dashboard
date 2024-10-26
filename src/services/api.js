@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 // Set up the base Axios instance
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://your-api-base-url.com', // Set API URL in .env file
+  baseURL: 'https://f58e-2405-201-202e-b80d-bd48-1e0d-136c-585c.ngrok-free.app', // Set API URL in .env file
   headers: {
     'Content-Type': 'application/json'
   }
