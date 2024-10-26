@@ -8,6 +8,11 @@ const horizontalMenuData = () => [
     label: 'About',
     href: '/about',
     icon: 'ri-information-line'
+  },
+  {
+    label: 'Bot Agent',
+    href: '/bot-agent',
+    icon: 'ri-robot-line'
   }
 ]
 

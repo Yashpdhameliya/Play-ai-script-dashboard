@@ -1,5 +1,5 @@
 // Component Imports
-import AgentList from '@views/apps/user/list'
+import AgentList from '@views/apps/user'
 
 const BotAgentApp = async () => {
   // Vars
