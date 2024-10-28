@@ -17,6 +17,8 @@ import Divider from '@mui/material/Divider'
 // Third-party Imports
 import { useForm, Controller } from 'react-hook-form'
 
+import apiService from '@/services/api'
+
 // Vars
 const initialData = {
   company: '',
@@ -64,13 +66,20 @@ const AddUserDrawer = props => {
 
   console.log('formDataformData', userData)
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     const newUser = {
-      id: (userData?.length && userData.length + 1) || 1,
       ...data
     }
 
     console.log('newUsernewUser', newUser)
+
+    try {
+      const response = await apiService.post('/bot_agents', newUser) // Assuming the endpoint is /users
+
+      console.log('adssssssss', response.data)
+    } catch (error) {
+      console.error('Error creating user:', error)
+    }
 
     // setData([...(userData ?? []), newUser])
 
