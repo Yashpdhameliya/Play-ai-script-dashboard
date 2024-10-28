@@ -6,6 +6,8 @@ import UserListTable from './UserListTable'
 import UserListCards from './UserListCards'
 
 const AgentList = ({ userData }) => {
+  console.log('userDatauserData', userData)
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>

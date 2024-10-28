@@ -21,6 +21,8 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 
 // Hook Imports
+import { destroyCookie } from 'nookies'
+
 import { useSettings } from '@core/hooks/useSettings'
 
 // Styled component for badge content
@@ -61,7 +63,9 @@ const UserDropdown = () => {
   }
 
   const handleUserLogout = async () => {
-    // Redirect to login page
+    destroyCookie(null, 'authToken')
+    destroyCookie(null, 'token')
+
     router.push('/login')
   }
 

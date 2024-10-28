@@ -1,6 +1,8 @@
 'use client'
 
 // Next Imports
+import { useState } from 'react'
+
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
@@ -8,29 +10,28 @@ import { useParams } from 'next/navigation'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-
-// Third-party Imports
 import classnames from 'classnames'
 
-// Component Imports
-import Logo from '@components/layout/shared/Logo'
-import DirectionalIcon from '@components/DirectionalIcon'
+import toast from 'react-hot-toast'
 
-// Hook Imports
+import Logo from '@components/layout/shared/Logo'
+
 import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
+import apiService from '@/services/api'
+
+const darkImg = '/images/pages/auth-v2-mask-4-dark.png'
+const lightImg = '/images/pages/auth-v2-mask-4-light.png'
+const darkIllustration = '/images/illustrations/auth/v2-forgot-password-dark.png'
+const lightIllustration = '/images/illustrations/auth/v2-forgot-password-light.png'
+const borderedDarkIllustration = '/images/illustrations/auth/v2-forgot-password-dark-border.png'
+const borderedLightIllustration = '/images/illustrations/auth/v2-forgot-password-light-border.png'
 
 const ForgotPasswordV2 = ({ mode }) => {
-  // Vars
-  const darkImg = '/images/pages/auth-v2-mask-4-dark.png'
-  const lightImg = '/images/pages/auth-v2-mask-4-light.png'
-  const darkIllustration = '/images/illustrations/auth/v2-forgot-password-dark.png'
-  const lightIllustration = '/images/illustrations/auth/v2-forgot-password-light.png'
-  const borderedDarkIllustration = '/images/illustrations/auth/v2-forgot-password-dark-border.png'
-  const borderedLightIllustration = '/images/illustrations/auth/v2-forgot-password-light-border.png'
+  const [formData, setFormData] = useState({ email: '' })
 
   // Hooks
   const { settings } = useSettings()
@@ -44,6 +45,26 @@ const ForgotPasswordV2 = ({ mode }) => {
     borderedLightIllustration,
     borderedDarkIllustration
   )
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    try {
+      const response = await apiService.post('/api/v1/passwords/forgot_password', { user: formData }) // Assuming the endpoint is /users
+
+      console.log('resdfsfdsponse', response)
+
+      if (response?.data?.success) {
+        // router.push('/login')
+        toast.success(response?.data?.data?.message)
+      }
+    } catch (error) {
+      console.error('Registration error:', error)
+      toast.error(error?.message)
+    }
+  }
+
+  console.log('formDataformData', formData)
 
   return (
     <div className='flex bs-full justify-center'>
@@ -78,18 +99,21 @@ const ForgotPasswordV2 = ({ mode }) => {
               Enter your email and we&#39;ll send you instructions to reset your password
             </Typography>
           </div>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()} className='flex flex-col gap-5'>
-            <TextField autoFocus fullWidth label='Email' />
+          <form autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-5'>
+            <TextField
+              type='email'
+              autoFocus
+              fullWidth
+              label='Email'
+              required
+              value={formData?.email}
+              onChange={e => setFormData({ email: e.target.value })}
+            />
             <Button fullWidth variant='contained' type='submit'>
               Send reset link
             </Button>
             <Typography className='flex justify-center items-center' color='primary'>
               <Link href='/login' className='flex items-center gap-1.5'>
-                <DirectionalIcon
-                  ltrIconClass='ri-arrow-left-s-line'
-                  rtlIconClass='ri-arrow-right-s-line'
-                  className='text-xl'
-                />
                 <span>Back to Login</span>
               </Link>
             </Typography>

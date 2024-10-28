@@ -25,6 +25,10 @@ import { object, minLength, string, email, pipe, nonEmpty } from 'valibot'
 import classnames from 'classnames'
 
 // Component Imports
+import { setCookie } from 'nookies'
+
+import toast from 'react-hot-toast'
+
 import Logo from '@components/layout/shared/Logo'
 
 // Config Imports
@@ -36,8 +40,7 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
-
-import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import apiService from '@/services/api'
 
 const schema = object({
   email: pipe(string(), minLength(1, 'This field is required'), email('Please enter a valid email address')),
@@ -93,44 +96,25 @@ const Login = ({ mode }) => {
 
   const onSubmit = async data => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BE_API_BASE_URL}auth/login`, {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-        .then(res => res.json())
-        .then(res => {
-          console.log('res: ', res)
-          const redirectURL = '/home'
-          console.log('redirectURL: ', redirectURL)
-          setCookie(null, 'auth', JSON.stringify(res), {
-            maxAge: 30 * 24 * 60 * 60,
-            path: '/'
-          })
-          router.push('/home')
-        })
-        .catch(err => {
-          console.log('err 1', err)
-        })
-    } catch (err) {
-      console.log('err 2', err)
-    }
+      const response = await apiService.post('/api/v1/users/sign_in', { user: data })
 
-    // const res = await signIn('credentials', {
-    //   email: data.email,
-    //   password: data.password,
-    //   redirect: false
-    // })
-    // if (res && res.ok && res.error === null) {
-    //   // Vars
-    //   const redirectURL = searchParams.get('redirectTo') ?? '/'
-    //   router.replace(getLocalizedUrl(redirectURL, locale))
-    // } else {
-    //   if (res?.error) {
-    //     const error = JSON.parse(res?.error)
-    //     setErrorState(error)
-    //   }
-    // }
+      console.log('responseresponse', response)
+
+      if (response?.data?.success) {
+        setCookie(null, 'authToken', JSON.stringify(response?.data?.data), {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/'
+        })
+        setCookie(null, 'token', JSON.stringify(response?.data?.data?.authorization), {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/'
+        })
+        router.push('/home')
+        toast.success('Login Successfully!')
+      }
+    } catch (err) {
+      toast.error(err?.message)
+    }
   }
 
   return (
@@ -161,12 +145,6 @@ const Login = ({ mode }) => {
             <Typography variant='h4'>{`Welcome to ${themeConfig.templateName}!👋🏻`}</Typography>
             <Typography>Please sign-in to your account and start the adventure</Typography>
           </div>
-          <Alert icon={false} className='bg-[var(--mui-palette-primary-lightOpacity)]'>
-            <Typography variant='body2' color='primary'>
-              Email: <span className='font-medium'>admin@materialize.com</span> / Pass:{' '}
-              <span className='font-medium'>admin</span>
-            </Typography>
-          </Alert>
 
           <form
             noValidate
@@ -232,12 +210,7 @@ const Login = ({ mode }) => {
             />
             <div className='flex justify-between items-center flex-wrap gap-x-3 gap-y-1'>
               <FormControlLabel control={<Checkbox defaultChecked />} label='Remember me' />
-              <Typography
-                className='text-end'
-                color='primary'
-                component={Link}
-                href={getLocalizedUrl('/forgot-password', locale)}
-              >
+              <Typography className='text-end' color='primary' component={Link} href={'/forgot-password'}>
                 Forgot password?
               </Typography>
             </div>
@@ -246,7 +219,7 @@ const Login = ({ mode }) => {
             </Button>
             <div className='flex justify-center items-center flex-wrap gap-2'>
               <Typography>New on our platform?</Typography>
-              <Typography component={Link} href={getLocalizedUrl('/register', locale)} color='primary'>
+              <Typography component={Link} href={'/register'} color='primary'>
                 Create an account
               </Typography>
             </div>

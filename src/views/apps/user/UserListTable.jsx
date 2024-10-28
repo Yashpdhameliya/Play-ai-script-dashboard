@@ -105,7 +105,7 @@ const UserListTable = ({ tableData }) => {
   // States
   const [addUserOpen, setAddUserOpen] = useState(false)
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[tableData])
+  const [data, setData] = useState(tableData)
   const [filteredData, setFilteredData] = useState(data)
   const [globalFilter, setGlobalFilter] = useState('')
 
@@ -267,6 +267,8 @@ const UserListTable = ({ tableData }) => {
     }
   }
 
+  console.log('tabldsaaseData', filteredData)
+
   return (
     <>
       <Card>
@@ -294,7 +296,7 @@ const UserListTable = ({ tableData }) => {
             </Button>
           </div>
         </div>
-        <div className='overflow-x-auto'>
+        {/* <div className='overflow-x-auto'>
           <table className={tableStyles.table}>
             <thead>
               {table.getHeaderGroups().map(headerGroup => (
@@ -348,8 +350,8 @@ const UserListTable = ({ tableData }) => {
               </tbody>
             )}
           </table>
-        </div>
-        <TablePagination
+        </div> */}
+        {/* <TablePagination
           rowsPerPageOptions={[10, 25, 50]}
           component='div'
           className='border-bs'
@@ -363,7 +365,7 @@ const UserListTable = ({ tableData }) => {
             table.setPageIndex(page)
           }}
           onRowsPerPageChange={e => table.setPageSize(Number(e.target.value))}
-        />
+        /> */}
       </Card>
       <AddUserDrawer
         open={addUserOpen}

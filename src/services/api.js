@@ -3,9 +3,14 @@ import Cookies from 'js-cookie'
 
 // Set up the base Axios instance
 const api = axios.create({
-  baseURL: 'http://159.65.150.5:3000/api/v1/', // Set API URL in .env file
+  baseURL: 'http://159.65.150.5:3000', // Set API URL in .env file
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+
+    // 'Content-Length': '<calculated when request is sent>',
+    // Host: '<calculated when request is sent>',
+    Accept: 'application/json',
+    'token-type': 'Bearer'
   }
 })
 
@@ -15,7 +20,7 @@ api.interceptors.request.use(
     const token = Cookies.get('token') // Adjust the key name as per your token cookie
 
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = JSON.parse(token)
     }
 
     return config

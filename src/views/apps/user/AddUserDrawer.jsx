@@ -74,7 +74,7 @@ const AddUserDrawer = props => {
     console.log('newUsernewUser', newUser)
 
     try {
-      const response = await apiService.post('/bot_agents', newUser) // Assuming the endpoint is /users
+      const response = await apiService.post('/api/v1/bot_agents', newUser) // Assuming the endpoint is /users
 
       console.log('adssssssss', response.data)
     } catch (error) {
