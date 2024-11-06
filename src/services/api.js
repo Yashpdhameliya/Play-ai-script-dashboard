@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 // Set up the base Axios instance
 const api = axios.create({
-  baseURL: 'https://159.65.150.5:3000', // Set API URL in .env file
+  baseURL: 'http://159.65.150.5:3000', // Set API URL in .env file
   headers: {
     'Content-Type': 'application/json',
 
