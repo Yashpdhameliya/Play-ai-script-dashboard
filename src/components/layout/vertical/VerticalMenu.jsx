@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 // Component Imports
-import { Menu, MenuItem } from '@menu/vertical-menu'
+import { Menu, MenuItem, SubMenu } from '@menu/vertical-menu'
 
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
@@ -61,9 +61,11 @@ const VerticalMenu = ({ scrollMenu }) => {
         <MenuItem href='/about' icon={<i className='ri-information-line' />}>
           About
         </MenuItem>
-        <MenuItem href='/bot-agent' icon={<i className='ri-robot-line' />}>
-          Bot Agent
-        </MenuItem>
+
+        <SubMenu label={'Bot Agent'} icon={<i className='ri-robot-line' />}>
+          <MenuItem href={`/bot-agent/list`}>{'list'}</MenuItem>
+          <MenuItem href={`/bot-agent/view`}>{'view'}</MenuItem>
+        </SubMenu>
       </Menu>
       {/* <Menu
           popoutMenuOffset={{ mainAxis: 17 }}

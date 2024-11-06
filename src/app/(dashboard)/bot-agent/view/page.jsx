@@ -27,30 +27,25 @@ import UserListCards from '@views/statistics/UserListCards'
 import LogisticsStatisticsCard from '@/views/statistics/LogisticsStatisticsCard'
 import { getStatisticsData } from '@/app/server/actions'
 
-/**
- * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the
- * ! `.env` file found at root of your project and also update the API endpoints like `/pages/widget-examples` in below example.
- * ! Also, remove the above server action import and the action itself from the `src/app/server/actions.ts` file to clean up unused code
- * ! because we've used the server action for getting our static data.
- */
-/* const getStatisticsData = async () => {
-  // Vars
-  const res = await fetch(`${process.env.API_URL}/pages/widget-examples`)
+const getUserData = async () => {
+  try {
+    const response = await apiService.get('/api/v1/bot_agents?sort_by=created_at&sort_direction=desc') // Assuming the endpoint is /users
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch statisticsData')
+    return response?.data?.data
+  } catch (error) {
+    console.error('Error fetching user data:', error)
   }
-
-  return res.json()
-} */
+}
 const Statistics = async () => {
-  // Vars
+  const userData = await getUserData()
   const data = await getStatisticsData()
+
+  console.log('userDatauserData', userData)
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <Horizontal data={data.statsHorizontal} />
+        <UserListCards />
       </Grid>
       <Grid item xs={12}>
         <Characters data={data.statsCharacter} />

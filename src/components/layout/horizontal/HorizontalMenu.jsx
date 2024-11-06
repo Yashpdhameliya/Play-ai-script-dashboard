@@ -70,9 +70,11 @@ const HorizontalMenu = () => {
         <MenuItem href='/about' icon={<i className='ri-information-line' />}>
           About
         </MenuItem>
-        <MenuItem href='/bot-agent' icon={<i className='ri-robot-line' />}>
-          Bot Agent
-        </MenuItem>
+
+        <SubMenu label={'Bot Agent'} icon={<i className='ri-robot-line' />}>
+          <MenuItem href={`/bot-agent/list`}>{'list'}</MenuItem>
+          <MenuItem href={`/bot-agent/view`}>{'view'}</MenuItem>
+        </SubMenu>
       </Menu>
       {/* <Menu
           rootStyles={menuRootStyles(theme)}
