@@ -13,12 +13,12 @@ const verticalMenuData = () => [
     label: 'Bot Agent',
     children: [
       {
-        label: 'list',
-        href: '/bot-agent/list'
+        label: 'Create',
+        href: '/bot-agent/create'
       },
       {
-        label: 'view',
-        href: '/bot-agent/view'
+        label: 'My Agents',
+        href: '/bot-agent/my-agents'
       }
     ],
     icon: 'ri-robot-line'

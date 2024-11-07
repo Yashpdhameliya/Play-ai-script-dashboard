@@ -23,27 +23,32 @@ import StepPriceDetails from './StepPriceDetails'
 // Styled Component Imports
 import StepperWrapper from '@core/styles/stepper'
 import StepperCustomDot from '@components/stepper-dot'
+import DeployWeb from './DeployWeb'
 
 // Vars
 const steps = [
   {
-    title: 'Personal Details',
+    title: 'Identity',
     subtitle: 'Your Name/Email'
   },
   {
-    title: 'Property Details',
+    title: 'Behavior',
     subtitle: 'Property Type'
   },
   {
-    title: 'Property Features',
+    title: 'Knowledge',
     subtitle: 'Bedrooms/Floor No'
   },
   {
-    title: 'Property Area',
+    title: 'Actions',
     subtitle: 'Covered Area'
   },
   {
-    title: 'Price Details',
+    title: 'Deploy · Phone',
+    subtitle: 'Expected Price'
+  },
+  {
+    title: 'Deploy · Web',
     subtitle: 'Expected Price'
   }
 ]
@@ -58,7 +63,9 @@ const getStepContent = (step, handleNext, handlePrev) => {
           ? StepPropertyFeatures
           : step === 3
             ? StepPropertyArea
-            : StepPriceDetails
+            : step === 4
+              ? StepPropertyArea
+              : DeployWeb
 
   return <Tag activeStep={step} handleNext={handleNext} handlePrev={handlePrev} steps={steps} />
 }
