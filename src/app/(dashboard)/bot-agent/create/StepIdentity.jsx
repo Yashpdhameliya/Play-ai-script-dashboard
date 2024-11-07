@@ -61,7 +61,7 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <TextField fullWidth label='First Name' placeholder='John' />
+        <TextField fullWidth label='Display Name' placeholder='display_name' />
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={5}>
@@ -91,80 +91,24 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
           </Grid>
         </Grid>{' '}
       </Grid>
-      {/* 
+
       <Grid item xs={12}>
         <Grid container spacing={5}>
-          {data.map((item, index) => {
-            let asset
+          <Grid item xs={12} md={6}>
+            <TextField fullWidth label='Description' placeholder='description' />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField fullWidth label='Greeting' placeholder='greeting' />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField fullWidth label='Prompt' placeholder='prompt' />
+          </Grid>
 
-            if (item.asset && typeof item.asset === 'string') {
-              asset = <i className={classnames(item.asset, 'text-[28px]')} />
-            }
-
-            return (
-              <CustomInputVertical
-                type='radio'
-                key={index}
-                gridProps={{ sm: 4, xs: 12 }}
-                selected={selectedOption}
-                name='custom-radios-basic'
-                handleChange={handleOptionChange}
-                data={typeof item.asset === 'string' ? { ...item, asset } : item}
-              />
-            )
-          })}
-        </Grid>
-      </Grid> */}
-      {/* <Grid item xs={12}>
-        <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
-            <TextField fullWidth label='First Name' placeholder='John' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label='Last Name' placeholder='Doe' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label='Username' placeholder='john.doe' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label='Password'
-              placeholder='············'
-              id='personal-details-password'
-              type={isPasswordShown ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton
-                      size='small'
-                      edge='end'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={e => e.preventDefault()}
-                      aria-label='toggle password visibility'
-                    >
-                      <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label='Email' placeholder='john.doe@gmail.com' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label='Contact'
-              placeholder='202 555 0111'
-              InputProps={{
-                startAdornment: <InputAdornment position='start'>US (+1)</InputAdornment>
-              }}
-            />
+            <TextField fullWidth label='Critical Knowledge' placeholder='critical_knowledge' />
           </Grid>
         </Grid>
-      </Grid> */}
+      </Grid>
       <Grid item xs={12}>
         <div className='flex items-center justify-between'>
           <Button
