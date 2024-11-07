@@ -14,6 +14,8 @@ import classnames from 'classnames'
 // Component Imports
 import CustomInputVertical from '@core/components/custom-inputs/Vertical'
 import DirectionalIcon from '@components/DirectionalIcon'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Controller } from 'react-hook-form'
 
 // Vars
 const data = [
@@ -38,7 +40,7 @@ const data = [
   }
 ]
 
-const StepPersonalDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
+const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
   // Vars
   const initialSelectedOption = data.filter(item => item.isSelected)[data.filter(item => item.isSelected).length - 1]
     .value
@@ -58,6 +60,38 @@ const StepPersonalDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
 
   return (
     <Grid container spacing={6}>
+      <Grid item xs={12}>
+        <TextField fullWidth label='First Name' placeholder='John' />
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container spacing={5}>
+          <Grid item xs={18} md={9}>
+            <FormControl fullWidth>
+              <InputLabel id='voice-select'>Voice</InputLabel>
+              <Select label='voice' labelId='voice-select' aria-describedby='voice-select' defaultValue=''>
+                <MenuItem value='en-US'>English (US)</MenuItem>
+                <MenuItem value='en-GB'>English (UK)</MenuItem>
+              </Select>
+            </FormControl>{' '}
+          </Grid>{' '}
+          <Grid item xs={6} md={3}>
+            <FormControl fullWidth>
+              <InputLabel id='speed-select'>Speed</InputLabel>
+              <Select label='speed' labelId='speed-select' aria-describedby='speed-select' defaultValue=''>
+                {[...Array(11)].map((_, index) => {
+                  const value = (0.5 + index * 0.1).toFixed(1) + 'x'
+                  return (
+                    <MenuItem key={value} value={value}>
+                      {value}
+                    </MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>{' '}
+          </Grid>
+        </Grid>{' '}
+      </Grid>
+      {/* 
       <Grid item xs={12}>
         <Grid container spacing={5}>
           {data.map((item, index) => {
@@ -80,8 +114,8 @@ const StepPersonalDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
             )
           })}
         </Grid>
-      </Grid>
-      <Grid item xs={12}>
+      </Grid> */}
+      {/* <Grid item xs={12}>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <TextField fullWidth label='First Name' placeholder='John' />
@@ -130,7 +164,7 @@ const StepPersonalDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
             />
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid item xs={12}>
         <div className='flex items-center justify-between'>
           <Button
@@ -162,4 +196,4 @@ const StepPersonalDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
   )
 }
 
-export default StepPersonalDetails
+export default StepIdentity

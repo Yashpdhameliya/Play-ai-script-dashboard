@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 
 // Component Imports
-import StepPersonalDetails from './StepPersonalDetails'
+import StepIdentity from './StepIdentity'
 import StepPropertyDetails from './StepPropertyDetails'
 import StepPropertyFeatures from './StepPropertyFeatures'
 import StepPropertyArea from './StepPropertyArea'
@@ -56,7 +56,7 @@ const steps = [
 const getStepContent = (step, handleNext, handlePrev) => {
   const Tag =
     step === 0
-      ? StepPersonalDetails
+      ? StepIdentity
       : step === 1
         ? StepPropertyDetails
         : step === 2
