@@ -12,7 +12,7 @@ import { useForm, Controller } from 'react-hook-form'
 // Component Imports
 import DirectionalIcon from '@components/DirectionalIcon'
 
-const StepAgentInstructions = ({ activeStep, handleNext, handlePrev, steps }) => {
+const StepAgentInstructions = ({ activeStep, handleNext, handlePrev, steps, formData, setFormData }) => {
   // Form setup
   const {
     control,
@@ -25,7 +25,7 @@ const StepAgentInstructions = ({ activeStep, handleNext, handlePrev, steps }) =>
   })
 
   const onSubmit = data => {
-    console.log('Form data:', data)
+    setFormData({ ...formData, ...data })
     handleNext()
   }
 

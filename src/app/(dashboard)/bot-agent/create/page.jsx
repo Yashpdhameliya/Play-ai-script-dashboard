@@ -24,6 +24,8 @@ import StepPriceDetails from './StepPriceDetails'
 import StepperWrapper from '@core/styles/stepper'
 import StepperCustomDot from '@components/stepper-dot'
 import DeployWeb from './DeployWeb'
+import apiService from '@/services/api'
+import toast from 'react-hot-toast'
 
 // Vars
 const steps = [
@@ -53,7 +55,7 @@ const steps = [
   }
 ]
 
-const getStepContent = (step, handleNext, handlePrev) => {
+const getStepContent = (step, handleNext, handlePrev, setFormData, formData) => {
   const Tag =
     step === 0
       ? StepIdentity
@@ -67,7 +69,16 @@ const getStepContent = (step, handleNext, handlePrev) => {
               ? StepPriceDetails
               : DeployWeb
 
-  return <Tag activeStep={step} handleNext={handleNext} handlePrev={handlePrev} steps={steps} />
+  return (
+    <Tag
+      activeStep={step}
+      handleNext={handleNext}
+      handlePrev={handlePrev}
+      steps={steps}
+      setFormData={setFormData}
+      formData={formData}
+    />
+  )
 }
 
 // Styled Components
@@ -80,12 +91,24 @@ const ConnectorHeight = styled(StepConnector)(() => ({
 const PropertyListingWizard = () => {
   // States
   const [activeStep, setActiveStep] = useState(0)
+  const [formData, setFormData] = useState()
 
-  const handleNext = () => {
+  const handleNext = async data => {
+    console.log('adsadsads', data)
     if (activeStep !== steps.length - 1) {
       setActiveStep(activeStep + 1)
     } else {
-      alert('Submitted..!!')
+      try {
+        const response = await apiService.post('/api/v1/bot_agents', data)
+        toast.success('Agent created successfully!')
+        setActiveStep(0)
+        console.log('responseresponse', response)
+      } catch (error) {
+        console.error('Error creating user:', error?.response?.data?.errors)
+        toast.error(error?.response?.data?.errors)
+      }
+
+      // reset(defaultValues)
     }
   }
 
@@ -94,7 +117,7 @@ const PropertyListingWizard = () => {
       setActiveStep(activeStep - 1)
     }
   }
-
+  console.log('formDataformData', formData)
   return (
     <Card className='flex flex-col lg:flex-row'>
       <CardContent className='max-lg:border-be lg:border-ie lg:min-is-[300px]'>
@@ -119,7 +142,9 @@ const PropertyListingWizard = () => {
         </StepperWrapper>
       </CardContent>
 
-      <CardContent className='flex-1 pbs-5'>{getStepContent(activeStep, handleNext, handlePrev)}</CardContent>
+      <CardContent className='flex-1 pbs-5'>
+        {getStepContent(activeStep, handleNext, handlePrev, setFormData, formData)}
+      </CardContent>
     </Card>
   )
 }

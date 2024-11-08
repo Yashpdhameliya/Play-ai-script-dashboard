@@ -9,8 +9,8 @@ import MenuItem from '@mui/material/MenuItem'
 
 import DirectionalIcon from '@components/DirectionalIcon'
 
-const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
-  const [formData, setFormData] = useState({
+const DeployWeb = ({ activeStep, handleNext, handlePrev, steps, formData, setFormData }) => {
+  const [formDataNew, setFormDataNew] = useState({
     crawl_target_url: '',
     widget_border_color: '#000000',
     widget_background_color: '#ffffff',
@@ -23,7 +23,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
 
   const handleInputChange = e => {
     const { name, value } = e.target
-    setFormData(prevState => ({ ...prevState, [name]: value }))
+    setFormDataNew(prevState => ({ ...prevState, [name]: value }))
   }
 
   return (
@@ -35,7 +35,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           label='Crawl Target URL'
           placeholder='https://example.com/content'
           name='crawl_target_url'
-          value={formData.crawl_target_url}
+          value={formDataNew?.crawl_target_url}
           onChange={handleInputChange}
           type='url'
         />
@@ -47,7 +47,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           fullWidth
           label='Widget Border Color'
           name='widget_border_color'
-          value={formData.widget_border_color}
+          value={formDataNew?.widget_border_color}
           onChange={handleInputChange}
           type='color'
         />
@@ -59,7 +59,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           fullWidth
           label='Widget Background Color'
           name='widget_background_color'
-          value={formData.widget_background_color}
+          value={formDataNew?.widget_background_color}
           onChange={handleInputChange}
           type='color'
         />
@@ -71,7 +71,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           fullWidth
           label='Widget Text Color'
           name='widget_text_color'
-          value={formData.widget_text_color}
+          value={formDataNew?.widget_text_color}
           onChange={handleInputChange}
           type='color'
         />
@@ -84,7 +84,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           label='Button Title'
           placeholder='Chat with Us'
           name='button_title'
-          value={formData.button_title}
+          value={formDataNew?.button_title}
           onChange={handleInputChange}
         />
       </Grid>
@@ -96,7 +96,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           select
           label='Widget Position'
           name='widget_position'
-          value={formData.widget_position}
+          value={formDataNew?.widget_position}
           onChange={handleInputChange}
         >
           <MenuItem value='bottom-right'>Bottom Right</MenuItem>
@@ -113,7 +113,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           label='Powered By Label'
           placeholder='Powered by XYZ'
           name='widget_powered_by_label'
-          value={formData.widget_powered_by_label}
+          value={formDataNew?.widget_powered_by_label}
           onChange={handleInputChange}
         />
       </Grid>
@@ -125,7 +125,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           label='Powered By URL'
           placeholder='https://example.com'
           name='widget_powered_by_url'
-          value={formData.widget_powered_by_url}
+          value={formDataNew?.widget_powered_by_url}
           onChange={handleInputChange}
           type='url'
         />
@@ -145,7 +145,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           <Button
             variant='contained'
             color={activeStep === steps.length - 1 ? 'success' : 'primary'}
-            onClick={() => handleNext(formData)}
+            onClick={() => handleNext({ ...formData, ...formDataNew })}
             endIcon={
               activeStep === steps.length - 1 ? (
                 <i className='ri-check-line' />

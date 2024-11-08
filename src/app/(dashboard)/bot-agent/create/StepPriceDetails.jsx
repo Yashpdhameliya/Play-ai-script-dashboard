@@ -9,7 +9,7 @@ import Button from '@mui/material/Button'
 // Component Imports
 import DirectionalIcon from '@components/DirectionalIcon'
 
-const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
+const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps, formData, setFormData }) => {
   const [contactNumber, setContactNumber] = useState('+1234567890')
   const [error, setError] = useState('')
 
@@ -29,7 +29,7 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
       setError('Please enter a valid contact number')
       return
     }
-    console.log('Contact Number:', contactNumber)
+    setFormData({ ...formData, contactNumber: contactNumber })
     handleNext()
   }
 

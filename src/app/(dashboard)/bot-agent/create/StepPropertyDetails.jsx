@@ -9,7 +9,7 @@ import Button from '@mui/material/Button'
 // Third-party Imports
 import { useForm, Controller } from 'react-hook-form'
 
-const StepGreetingPrompt = ({ activeStep, handleNext, handlePrev, steps }) => {
+const StepGreetingPrompt = ({ activeStep, handleNext, handlePrev, steps, formData, setFormData }) => {
   // Form setup
   const {
     control,
@@ -23,7 +23,7 @@ const StepGreetingPrompt = ({ activeStep, handleNext, handlePrev, steps }) => {
   })
 
   const onSubmit = data => {
-    console.log('Form data:', data)
+    setFormData({ ...formData, ...data })
     handleNext()
   }
 

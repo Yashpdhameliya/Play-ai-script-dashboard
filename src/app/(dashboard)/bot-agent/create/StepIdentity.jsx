@@ -17,13 +17,12 @@ import { useForm, Controller } from 'react-hook-form'
 // Component Imports
 import DirectionalIcon from '@components/DirectionalIcon'
 
-const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
+const StepIdentity = ({ activeStep, handleNext, handlePrev, steps, formData, setFormData }) => {
   const initialSelectedOption = 'en-US'
 
   // States
   const [avatarUrl, setAvatarUrl] = useState('')
 
-  // Form setup
   const {
     control,
     handleSubmit,
@@ -39,7 +38,7 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
   })
 
   const onSubmit = data => {
-    console.log('Form data:', data)
+    setFormData({ ...formData, ...data })
     handleNext()
   }
 
