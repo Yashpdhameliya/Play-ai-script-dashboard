@@ -44,7 +44,7 @@ const data = [
   }
 ]
 
-const UserListCards = () => {
+const UserListCards = ({ agent }) => {
   return (
     <Grid container spacing={6}>
       {data.map((item, i) => (

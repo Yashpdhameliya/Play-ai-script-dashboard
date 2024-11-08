@@ -1,8 +1,5 @@
-// MUI Imports
+'use client'
 import Grid from '@mui/material/Grid'
-
-// Components Imports
-import Horizontal from '@views/statistics/Horizontal'
 import Characters from '@views/statistics/Characters'
 import Vertical from '@views/statistics/Vertical'
 import BarChart from '@views/statistics/BarChart'
@@ -26,25 +23,36 @@ import UserListCards from '@views/statistics/UserListCards'
 // Data Imports
 import LogisticsStatisticsCard from '@/views/statistics/LogisticsStatisticsCard'
 import { getStatisticsData } from '@/app/server/actions'
+import { useEffect, useState } from 'react'
+import apiService from '@/services/api'
+import HorizontalWithSubtitle from '@/components/card-statistics/HorizontalWithSubtitle'
+import BotAgentCard from '@/components/card-statistics/HorizontalWithSubtitle'
 
-const getUserData = async () => {
-  try {
-    const response = await apiService.get('/api/v1/bot_agents?sort_by=created_at&sort_direction=desc') // Assuming the endpoint is /users
-
-    return response?.data?.data
-  } catch (error) {
-    console.error('Error fetching user data:', error)
+const Statistics = () => {
+  const [agentList, setAgentList] = useState()
+  const getUserData = async () => {
+    try {
+      const response = await apiService.get('/api/v1/bot_agents?sort_by=created_at&sort_direction=desc') // Assuming the endpoint is /users
+      console.log('sfdsfd', response)
+      setAgentList(response?.data?.data)
+      // return response
+    } catch (error) {
+      console.error('Error fetching user data:', error)
+    }
   }
-}
-const Statistics = async () => {
-  const userData = await getUserData()
-  const data = await getStatisticsData()
 
-  console.log('userDatauserData', userData)
-
+  useEffect(() => {
+    getUserData()
+  }, [])
+  console.log('agentListagentList', agentList)
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12}>
+      {agentList?.map((item, i) => (
+        <Grid key={i} item xs={12} sm={6} md={3}>
+          <BotAgentCard {...item} />
+        </Grid>
+      ))}
+      {/* <Grid item xs={12}>
         <UserListCards />
       </Grid>
       <Grid item xs={12}>
@@ -106,7 +114,7 @@ const Statistics = async () => {
       </Grid>
       <Grid item xs={12} md={6}>
         <Sales />
-      </Grid>
+      </Grid> */}
     </Grid>
   )
 }
