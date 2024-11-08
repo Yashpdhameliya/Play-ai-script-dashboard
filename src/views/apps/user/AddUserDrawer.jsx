@@ -42,25 +42,36 @@ const AddUserDrawer = props => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      voice: '',
+      // 1  Identty
+      display_name: 'Agend Name 1',
+      voice: 'en-US',
       voice_speed: 1.0,
-      display_name: '',
-      description: '',
-      greeting: '',
-      prompt: '',
-      critical_knowledge: '',
-      visibility: '',
-      avatar_photo_url: '',
-      button_title: '',
-      contact_number: '',
-      widget_position: '',
+      avatar_photo_url: 'https://picsum.photos/200/300',
+      visibility: 'public',
+
+      // 2  Behaviour
+      greeting: 'Hello! How can I assist you today?',
+      prompt: 'Please ask any question related to our services.',
+
+      // 3. knowlwdgh
+      critical_knowledge: 'This bot is trained to answer questions about our products and services.',
+      description: 'This is a sample description for the bot agent.',
+
+      // 4.action
+      agent_action_instructions: 'Please follow up with human support if unresolved.',
+
+      // 4. Deploy agent to phone
+      contact_number: '+1234567890',
+
+      // 5. Deploy agent to website
+      crawl_target_url: 'https://example.com/content',
       widget_border_color: '#000000',
       widget_background_color: '#ffffff',
       widget_text_color: '#333333',
-      agent_action_instructions: '',
-      widget_powered_by_label: '',
-      widget_powered_by_url: '',
-      crawl_target_url: ''
+      button_title: 'Chat with Us',
+      widget_position: 'bottom-right',
+      widget_powered_by_label: 'Powered by XYZ',
+      widget_powered_by_url: 'https://example.com'
     }
   })
 

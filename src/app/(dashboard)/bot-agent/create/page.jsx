@@ -64,7 +64,7 @@ const getStepContent = (step, handleNext, handlePrev) => {
           : step === 3
             ? StepPropertyArea
             : step === 4
-              ? StepPropertyArea
+              ? StepPriceDetails
               : DeployWeb
 
   return <Tag activeStep={step} handleNext={handleNext} handlePrev={handlePrev} steps={steps} />

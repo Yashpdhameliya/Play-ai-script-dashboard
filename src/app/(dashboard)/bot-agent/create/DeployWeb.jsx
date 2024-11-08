@@ -5,132 +5,132 @@ import { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
+import MenuItem from '@mui/material/MenuItem'
 
-// Third-party Imports
-import classnames from 'classnames'
-
-// Component Imports
-import CustomInputVertical from '@core/components/custom-inputs/Vertical'
 import DirectionalIcon from '@components/DirectionalIcon'
 
-// Vars
-const data = [
-  {
-    title: 'I am the Builder',
-    value: 'builder',
-    content: 'List property as Builder, list your project and get highest reach.',
-    asset: 'ri-home-6-line',
-    isSelected: true
-  },
-  {
-    title: 'I am the Owner',
-    value: 'owner',
-    content: 'Submit property as an Individual. Lease, Rent or Sell at the best price.',
-    asset: 'ri-user-3-line'
-  },
-  {
-    title: 'I am the broker',
-    value: 'broker',
-    content: 'Earn highest commission by listing your clients properties at the best price.',
-    asset: 'ri-money-dollar-circle-line'
-  }
-]
-
 const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
-  // Vars
-  const initialSelectedOption = data.filter(item => item.isSelected)[data.filter(item => item.isSelected).length - 1]
-    .value
+  const [formData, setFormData] = useState({
+    crawl_target_url: '',
+    widget_border_color: '#000000',
+    widget_background_color: '#ffffff',
+    widget_text_color: '#333333',
+    button_title: '',
+    widget_position: 'bottom-right',
+    widget_powered_by_label: '',
+    widget_powered_by_url: ''
+  })
 
-  // States
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption)
-  const [isPasswordShown, setIsPasswordShown] = useState(false)
-  const handleClickShowPassword = () => setIsPasswordShown(show => !show)
-
-  const handleOptionChange = prop => {
-    if (typeof prop === 'string') {
-      setSelectedOption(prop)
-    } else {
-      setSelectedOption(prop.target.value)
-    }
+  const handleInputChange = e => {
+    const { name, value } = e.target
+    setFormData(prevState => ({ ...prevState, [name]: value }))
   }
 
   return (
     <Grid container spacing={6}>
+      {/* Crawl Target URL */}
       <Grid item xs={12}>
-        <Grid container spacing={5}>
-          {data.map((item, index) => {
-            let asset
-
-            if (item.asset && typeof item.asset === 'string') {
-              asset = <i className={classnames(item.asset, 'text-[28px]')} />
-            }
-
-            return (
-              <CustomInputVertical
-                type='radio'
-                key={index}
-                gridProps={{ sm: 4, xs: 12 }}
-                selected={selectedOption}
-                name='custom-radios-basic'
-                handleChange={handleOptionChange}
-                data={typeof item.asset === 'string' ? { ...item, asset } : item}
-              />
-            )
-          })}
-        </Grid>
+        <TextField
+          fullWidth
+          label='Crawl Target URL'
+          placeholder='https://example.com/content'
+          name='crawl_target_url'
+          value={formData.crawl_target_url}
+          onChange={handleInputChange}
+          type='url'
+        />
       </Grid>
+
+      {/* Widget Border Color */}
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label='Widget Border Color'
+          name='widget_border_color'
+          value={formData.widget_border_color}
+          onChange={handleInputChange}
+          type='color'
+        />
+      </Grid>
+
+      {/* Widget Background Color */}
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label='Widget Background Color'
+          name='widget_background_color'
+          value={formData.widget_background_color}
+          onChange={handleInputChange}
+          type='color'
+        />
+      </Grid>
+
+      {/* Widget Text Color */}
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label='Widget Text Color'
+          name='widget_text_color'
+          value={formData.widget_text_color}
+          onChange={handleInputChange}
+          type='color'
+        />
+      </Grid>
+
+      {/* Button Title */}
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label='Button Title'
+          placeholder='Chat with Us'
+          name='button_title'
+          value={formData.button_title}
+          onChange={handleInputChange}
+        />
+      </Grid>
+
+      {/* Widget Position */}
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          select
+          label='Widget Position'
+          name='widget_position'
+          value={formData.widget_position}
+          onChange={handleInputChange}
+        >
+          <MenuItem value='bottom-right'>Bottom Right</MenuItem>
+          <MenuItem value='bottom-left'>Bottom Left</MenuItem>
+          <MenuItem value='top-right'>Top Right</MenuItem>
+          <MenuItem value='top-left'>Top Left</MenuItem>
+        </TextField>
+      </Grid>
+
+      {/* Widget Powered By Label */}
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label='Powered By Label'
+          placeholder='Powered by XYZ'
+          name='widget_powered_by_label'
+          value={formData.widget_powered_by_label}
+          onChange={handleInputChange}
+        />
+      </Grid>
+
+      {/* Widget Powered By URL */}
       <Grid item xs={12}>
-        <Grid container spacing={5}>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label='First Name' placeholder='John' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label='Last Name' placeholder='Doe' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label='Username' placeholder='john.doe' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label='Password'
-              placeholder='············'
-              id='personal-details-password'
-              type={isPasswordShown ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton
-                      size='small'
-                      edge='end'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={e => e.preventDefault()}
-                      aria-label='toggle password visibility'
-                    >
-                      <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label='Email' placeholder='john.doe@gmail.com' />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label='Contact'
-              placeholder='202 555 0111'
-              InputProps={{
-                startAdornment: <InputAdornment position='start'>US (+1)</InputAdornment>
-              }}
-            />
-          </Grid>
-        </Grid>
+        <TextField
+          fullWidth
+          label='Powered By URL'
+          placeholder='https://example.com'
+          name='widget_powered_by_url'
+          value={formData.widget_powered_by_url}
+          onChange={handleInputChange}
+          type='url'
+        />
       </Grid>
+
       <Grid item xs={12}>
         <div className='flex items-center justify-between'>
           <Button
@@ -145,7 +145,7 @@ const DeployWeb = ({ activeStep, handleNext, handlePrev, steps }) => {
           <Button
             variant='contained'
             color={activeStep === steps.length - 1 ? 'success' : 'primary'}
-            onClick={handleNext}
+            onClick={() => handleNext(formData)}
             endIcon={
               activeStep === steps.length - 1 ? (
                 <i className='ri-check-line' />

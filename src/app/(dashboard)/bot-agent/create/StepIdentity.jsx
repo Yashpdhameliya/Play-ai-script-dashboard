@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
+import Avatar from '@mui/material/Avatar'
 
 // Third-party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -16,37 +17,11 @@ import { useForm, Controller } from 'react-hook-form'
 // Component Imports
 import DirectionalIcon from '@components/DirectionalIcon'
 
-// Vars
-const data = [
-  {
-    title: 'I am the Builder',
-    value: 'builder',
-    content: 'List property as Builder, list your project and get highest reach.',
-    asset: 'ri-home-6-line',
-    isSelected: true
-  },
-  {
-    title: 'I am the Owner',
-    value: 'owner',
-    content: 'Submit property as an Individual. Lease, Rent or Sell at the best price.',
-    asset: 'ri-user-3-line'
-  },
-  {
-    title: 'I am the broker',
-    value: 'broker',
-    content: 'Earn highest commission by listing your clients properties at the best price.',
-    asset: 'ri-money-dollar-circle-line'
-  }
-]
-
 const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
-  // Vars
-  const initialSelectedOption = data.find(item => item.isSelected)?.value || ''
+  const initialSelectedOption = 'en-US'
 
   // States
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption)
-  const [isPasswordShown, setIsPasswordShown] = useState(false)
-  const handleClickShowPassword = () => setIsPasswordShown(show => !show)
+  const [avatarUrl, setAvatarUrl] = useState('')
 
   // Form setup
   const {
@@ -56,22 +31,16 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
   } = useForm({
     defaultValues: {
       display_name: '',
-      voice: '',
-      voice_speed: '',
-      description: '',
-      greeting: '',
-      prompt: '',
-      criticalKnowledge: ''
+      voice: initialSelectedOption,
+      voice_speed: '1.0x',
+      avatar_photo_url: avatarUrl,
+      visibility: 'public'
     }
   })
 
   const onSubmit = data => {
     console.log('Form data:', data)
     handleNext()
-  }
-
-  const handleOptionChange = event => {
-    setSelectedOption(event.target.value)
   }
 
   return (
@@ -87,7 +56,7 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
                 {...field}
                 fullWidth
                 label='Display Name'
-                placeholder='display_name'
+                placeholder='Enter Agent Name'
                 error={!!errors.display_name}
                 helperText={errors.display_name?.message}
               />
@@ -97,7 +66,7 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
 
         <Grid item xs={12}>
           <Grid container spacing={5}>
-            <Grid item xs={18} md={9}>
+            <Grid item xs={12} md={6}>
               <FormControl fullWidth error={!!errors.voice}>
                 <InputLabel id='voice-select'>Voice</InputLabel>
                 <Controller
@@ -114,7 +83,8 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
                 {errors.voice && <p className='MuiFormHelperText-root'>{errors.voice.message}</p>}
               </FormControl>
             </Grid>
-            <Grid item xs={6} md={3}>
+
+            <Grid item xs={12} md={6}>
               <FormControl fullWidth error={!!errors.voice_speed}>
                 <InputLabel id='speed-select'>Speed</InputLabel>
                 <Controller
@@ -141,59 +111,33 @@ const StepIdentity = ({ activeStep, handleNext, handlePrev, steps }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Grid container spacing={5}>
-            <Grid item xs={12} md={6}>
-              <Controller
-                name='description'
-                control={control}
-                rules={{ required: 'Description is required' }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label='Description'
-                    placeholder='description'
-                    error={!!errors.description}
-                    helperText={errors.description?.message}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller
-                name='greeting'
-                control={control}
-                rules={{ required: 'Greeting is required' }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label='Greeting'
-                    placeholder='greeting'
-                    error={!!errors.greeting}
-                    helperText={errors.greeting?.message}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller
-                name='prompt'
-                control={control}
-                render={({ field }) => <TextField {...field} fullWidth label='Prompt' placeholder='prompt' />}
-              />
-            </Grid>
+          <Controller
+            name='avatar_photo_url'
+            control={control}
+            render={({ field }) => (
+              <div className='flex items-center gap-4'>
+                <Avatar src={field.value} alt='Avatar' sx={{ width: 56, height: 56 }} />
+                <TextField {...field} fullWidth label='Avatar Photo URL' placeholder='https://picsum.photos/200/300' />
+              </div>
+            )}
+          />
+        </Grid>
 
-            <Grid item xs={12} md={6}>
-              <Controller
-                name='criticalKnowledge'
-                control={control}
-                render={({ field }) => (
-                  <TextField {...field} fullWidth label='Critical Knowledge' placeholder='critical_knowledge' />
-                )}
-              />
-            </Grid>
-          </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel id='visibility-select'>Visibility</InputLabel>
+            <Controller
+              name='visibility'
+              control={control}
+              rules={{ required: 'Visibility selection is required' }}
+              render={({ field }) => (
+                <Select {...field} label='Visibility' labelId='visibility-select'>
+                  <MenuItem value='public'>Public</MenuItem>
+                  <MenuItem value='private'>Private</MenuItem>
+                </Select>
+              )}
+            />
+          </FormControl>
         </Grid>
 
         <Grid item xs={12}>

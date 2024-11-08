@@ -4,129 +4,104 @@ import { useState } from 'react'
 // MUI Imports
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
-import FormLabel from '@mui/material/FormLabel'
-import Radio from '@mui/material/Radio'
-import RadioGroup from '@mui/material/RadioGroup'
 import Button from '@mui/material/Button'
-import Autocomplete from '@mui/material/Autocomplete'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Chip from '@mui/material/Chip'
+
+// Third-party Imports
+import { useForm, Controller } from 'react-hook-form'
 
 // Component Imports
 import DirectionalIcon from '@components/DirectionalIcon'
 
-// Vars
-const furnishingArray = [
-  'AC',
-  'TV',
-  'RO',
-  'Bed',
-  'WiFi',
-  'Sofa',
-  'Fridge',
-  'Cupboard',
-  'Microwave',
-  'Dining Table',
-  'Washing Machine'
-]
+const StepBotDetails = ({ activeStep, handleNext, handlePrev, steps }) => {
+  // Form setup
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      critical_knowledge: 'This bot is trained to answer questions about our products and services.',
+      description: 'This is a sample description for the bot agent.'
+    }
+  })
 
-const StepPropertyFeatures = ({ activeStep, handleNext, handlePrev, steps }) => {
-  // States
-  const [furnishingDetails, setFurnishingDetails] = useState(['Fridge', 'AC', 'TV'])
+  const onSubmit = data => {
+    console.log('Form data:', data)
+    handleNext()
+  }
 
   return (
-    <Grid container spacing={5}>
-      <Grid item xs={12} md={6}>
-        <TextField fullWidth label='Bedrooms' placeholder='3' />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <TextField fullWidth label='Floor No' placeholder='12' />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <TextField fullWidth label='Bathroom' placeholder='4' />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <FormControl fullWidth>
-          <InputLabel id='select-furnished-status'>Furnished Status</InputLabel>
-          <Select id='demo-simple-select' label='Furnished Status' labelId='select-furnished-status' defaultValue=''>
-            <MenuItem value='fully-furnished'>Fully Furnished</MenuItem>
-            <MenuItem value='furnished'>Furnished</MenuItem>
-            <MenuItem value='semi-furnished'>Semi Furnished</MenuItem>
-            <MenuItem value='unfurnished'>UnFurnished</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12}>
-        <Autocomplete
-          fullWidth
-          multiple
-          onChange={(event, value) => setFurnishingDetails(value)}
-          id='select-furnishing-details'
-          options={furnishingArray}
-          value={furnishingDetails}
-          defaultValue={furnishingDetails}
-          getOptionLabel={option => option || ''}
-          renderInput={params => <TextField {...params} label='Furnishing Details' />}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => {
-              const { key, ...otherProps } = getTagProps({ index })
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Grid container spacing={6}>
+        {/* Critical Knowledge Field */}
+        <Grid item xs={12}>
+          <Controller
+            name='critical_knowledge'
+            control={control}
+            rules={{ required: 'Critical knowledge is required' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label='Critical Knowledge'
+                placeholder='Enter critical knowledge for the bot'
+                error={!!errors.critical_knowledge}
+                helperText={errors.critical_knowledge?.message}
+              />
+            )}
+          />
+        </Grid>
 
-              return <Chip key={key} size='small' label={option} {...otherProps} />
-            })
-          }
-        />
+        {/* Description Field */}
+        <Grid item xs={12}>
+          <Controller
+            name='description'
+            control={control}
+            rules={{ required: 'Description is required' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label='Description'
+                placeholder='Enter a description for the bot'
+                error={!!errors.description}
+                helperText={errors.description?.message}
+              />
+            )}
+          />
+        </Grid>
+
+        {/* Navigation Buttons */}
+        <Grid item xs={12}>
+          <div className='flex items-center justify-between'>
+            <Button
+              variant='outlined'
+              color='secondary'
+              disabled={activeStep === 0}
+              onClick={handlePrev}
+              startIcon={<DirectionalIcon ltrIconClass='ri-arrow-left-line' rtlIconClass='ri-arrow-right-line' />}
+            >
+              Previous
+            </Button>
+            <Button
+              type='submit'
+              variant='contained'
+              color={activeStep === steps.length - 1 ? 'success' : 'primary'}
+              endIcon={
+                activeStep === steps.length - 1 ? (
+                  <i className='ri-check-line' />
+                ) : (
+                  <DirectionalIcon ltrIconClass='ri-arrow-right-line' rtlIconClass='ri-arrow-left-line' />
+                )
+              }
+            >
+              {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+            </Button>
+          </div>
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <FormControl className='gap-2'>
-          <FormLabel>Is There Any Common Area</FormLabel>
-          <RadioGroup defaultValue='yes'>
-            <FormControlLabel value='yes' control={<Radio />} label='Yes' />
-            <FormControlLabel value='no' control={<Radio />} label='No' />
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <FormControl className='gap-2'>
-          <FormLabel>Is There Any Attached Balcony</FormLabel>
-          <RadioGroup defaultValue='yes'>
-            <FormControlLabel value='yes' control={<Radio />} label='Yes' />
-            <FormControlLabel value='no' control={<Radio />} label='No' />
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} className='pbs-6'>
-        <div className='flex items-center justify-between'>
-          <Button
-            variant='outlined'
-            color='secondary'
-            disabled={activeStep === 0}
-            onClick={handlePrev}
-            startIcon={<DirectionalIcon ltrIconClass='ri-arrow-left-line' rtlIconClass='ri-arrow-right-line' />}
-          >
-            Previous
-          </Button>
-          <Button
-            variant='contained'
-            color={activeStep === steps.length - 1 ? 'success' : 'primary'}
-            onClick={handleNext}
-            endIcon={
-              activeStep === steps.length - 1 ? (
-                <i className='ri-check-line' />
-              ) : (
-                <DirectionalIcon ltrIconClass='ri-arrow-right-line' rtlIconClass='ri-arrow-left-line' />
-              )
-            }
-          >
-            {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
-          </Button>
-        </div>
-      </Grid>
-    </Grid>
+    </form>
   )
 }
 
-export default StepPropertyFeatures
+export default StepBotDetails
